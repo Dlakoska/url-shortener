@@ -14,7 +14,7 @@ import (
 	logging "url-shortener/internal/http-server/middleware/logger"
 	"url-shortener/internal/lib/logger/sl"
 	"url-shortener/internal/service"
-	"url-shortener/internal/storage"
+	"url-shortener/storage"
 )
 
 func main() {

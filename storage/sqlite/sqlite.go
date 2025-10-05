@@ -15,7 +15,6 @@ type SqlLiteRepository struct {
 var (
 	ErrUrlNotFound = errors.New("url not found")
 	ErrUrlExists   = errors.New("url already exists")
-	ErrURLNotFound = errors.New("url not found")
 )
 
 func (s *SqlLiteRepository) SaveURL(ctx context.Context, urlToSave string, alias string) (int64, error) {

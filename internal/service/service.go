@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 	"url-shortener/internal/dto"
 	"url-shortener/internal/lib/random"
-	"url-shortener/internal/storage"
+	"url-shortener/storage"
 )
 
 const aliasLength = 6

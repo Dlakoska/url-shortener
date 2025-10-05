@@ -11,8 +11,8 @@ import (
 	"log/slog"
 	"url-shortener/internal/config"
 	"url-shortener/internal/lib/logger/sl"
-	"url-shortener/internal/storage/postgres"
-	"url-shortener/internal/storage/sqlite"
+	"url-shortener/storage/postgres"
+	"url-shortener/storage/sqlite"
 )
 
 type Repository interface {
