@@ -7,11 +7,14 @@ import (
 	"url-shortener/internal/dto"
 	"url-shortener/internal/lib/random"
 	"url-shortener/internal/storage"
-	"url-shortener/models"
 )
 
 const aliasLength = 6
 
+type UrlShortener struct {
+	Url   string `json:"url"`
+	Alias string `json:"alias"`
+}
 type Service interface {
 	CreateAlias(ctx *fiber.Ctx) error
 	GetURL(ctx *fiber.Ctx) error
@@ -31,7 +34,7 @@ func New(repo storage.Repository, logger *zap.SugaredLogger) Service {
 
 func (s *service) CreateAlias(ctx *fiber.Ctx) error {
 	s.log.Info("CreateAlias")
-	var req models.UrlShortener
+	var req UrlShortener
 	if err := json.Unmarshal(ctx.Body(), &req); err != nil {
 		s.log.Error("Invalid request body", zap.Error(err))
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid request body")
@@ -40,7 +43,7 @@ func (s *service) CreateAlias(ctx *fiber.Ctx) error {
 	if alias == "" {
 		alias = random.NewRandomString(aliasLength)
 	}
-	aliasShortener := models.AliasShortener{
+	aliasShortener := UrlShortener{
 		Url:   req.Url,
 		Alias: alias,
 	}

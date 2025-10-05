@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	errWrap "github.com/pkg/errors"
+	"log/slog"
 	"url-shortener/internal/config"
 	"url-shortener/internal/lib/logger/sl"
 	"url-shortener/internal/storage/postgres"
@@ -28,20 +29,22 @@ func NewRepository(ctx context.Context, cfg config.Repository) (Repository, erro
 			log.Error("failed to init storage", sl.Err(err))
 			return nil, err
 		}
+		slog.Info("postgres init successfully")
 		return repository, nil
 	case "sqlite":
-		repository, err := New(cfg.SQLite.Path)
+		repository, err := NewSQLiteRepository(cfg.SQLite.Path)
 		if err != nil {
 			log.Error("failed to init storage", sl.Err(err))
 			return nil, err
 		}
+		slog.Info("sqlite init successfully")
 		return repository, nil
 	}
 	log.Error("No DB_CHOICE in config")
 	return nil, nil
 }
 
-func New(storagePath string) (Repository, error) {
+func NewSQLiteRepository(storagePath string) (Repository, error) {
 	const op = "storage.sqlite.New"
 
 	db, err := sql.Open("sqlite3", storagePath)
@@ -84,16 +87,16 @@ func NewPostgresRepository(ctx context.Context, cfg config.Postgres) (Repository
 	)
 
 	// Парсим конфигурацию подключения
-	config, err := pgxpool.ParseConfig(connString)
+	parseConfig, err := pgxpool.ParseConfig(connString)
 	if err != nil {
 		return nil, errWrap.Wrap(err, "failed to parse PostgreSQL config")
 	}
 
 	// Оптимизация выполнения запросов (кеширование запросов)
-	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeCacheDescribe
+	parseConfig.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeCacheDescribe
 
 	// Создаём пул соединений с базой данных
-	pool, err := pgxpool.NewWithConfig(ctx, config)
+	pool, err := pgxpool.NewWithConfig(ctx, parseConfig)
 	if err != nil {
 		return nil, errWrap.Wrap(err, "failed to create PostgreSQL connection pool")
 	}
