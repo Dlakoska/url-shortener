@@ -10,9 +10,9 @@ import (
 	errWrap "github.com/pkg/errors"
 	"log/slog"
 	"url-shortener/internal/config"
-	"url-shortener/internal/lib/logger/sl"
-	"url-shortener/storage/postgres"
-	"url-shortener/storage/sqlite"
+	"url-shortener/internal/storage/postgres"
+	"url-shortener/internal/storage/sqlite"
+	"url-shortener/pkg/lib/logger/sl"
 )
 
 type Repository interface {

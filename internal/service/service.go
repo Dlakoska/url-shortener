@@ -5,8 +5,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.uber.org/zap"
 	"url-shortener/internal/dto"
-	"url-shortener/internal/lib/random"
-	"url-shortener/storage"
+	"url-shortener/internal/storage"
+	"url-shortener/pkg/lib/random"
 )
 
 const aliasLength = 6

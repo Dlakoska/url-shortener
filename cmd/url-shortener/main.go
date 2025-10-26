@@ -12,9 +12,9 @@ import (
 	"url-shortener/internal/config"
 	"url-shortener/internal/http-server/api"
 	logging "url-shortener/internal/http-server/middleware/logger"
-	"url-shortener/internal/lib/logger/sl"
 	"url-shortener/internal/service"
-	"url-shortener/storage"
+	"url-shortener/internal/storage"
+	"url-shortener/pkg/lib/logger/sl"
 )
 
 func main() {
